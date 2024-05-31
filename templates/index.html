@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Reverse String App</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Reverse String Application</h1>
+        <form id="reverse-form">
+            <label for="text-input">Enter text:</label>
+            <input type="text" id="text-input" name="text" required>
+            <button type="submit">Reverse</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        document.getElementById('reverse-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const textInput = document.getElementById('text-input').value;
+            fetch('/reverse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ text: textInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('result').innerText = 'Reversed text: ' + data.reversed_text;
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
